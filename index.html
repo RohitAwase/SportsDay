@@ -10,6 +10,12 @@
 <body>
     <div class="root"></div>
     <script>
+        let scores = {
+    Red: 0,
+    Blue: 0,
+    Green: 0,
+    Yellow: 0
+};
         // Opening Ceremony
         function OpeningCeremony(callback) {
             console.log("🏆 Sports Day is starting!");
@@ -25,7 +31,7 @@
                     clearInterval(interval);
 
                     // Initialize scores
-                    let scores = {
+                    scores = {
                         Red: 0,
                         Blue: 0,
                         Green: 0,
