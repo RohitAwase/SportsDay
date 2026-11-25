@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="root"></div>
+    <script>
+        // Opening Ceremony
+        function OpeningCeremony(callback) {
+            console.log("🏆 Sports Day is starting!");
+
+            // Log message every second
+            let count = 1;
+
+            let interval = setInterval(() => {
+                console.log(`Opening Ceremony... ${count}`);
+                count++;
+
+                if (count > 3) {
+                    clearInterval(interval);
+
+                    // Initialize scores
+                    let scores = {
+                        Red: 0,
+                        Blue: 0,
+                        Green: 0,
+                        Yellow: 0
+                    };
+
+                    console.log("Initial Scores:", scores);
+
+                    // Start the next event
+                    callback(scores, Race100M);
+                }
+            }, 1000);
+        }
+
+        // 100 Meter Race
+        function Race100M(scores, callback) {
+            console.log("\n🏃 100 Meter Race starting...");
+
+            setTimeout(() => {
+                // Generate random race times
+                let times = {
+                    Red: Math.floor(Math.random() * 6) + 10,
+                    Blue: Math.floor(Math.random() * 6) + 10,
+                    Green: Math.floor(Math.random() * 6) + 10,
+                    Yellow: Math.floor(Math.random() * 6) + 10
+                };
+
+                console.log("Race Times:", times);
+                console.log("Previous Scores:", { ...scores });
+
+                // Sort participants by race time (lowest time wins)
+                let winners = Object.keys(times).sort(
+                    (a, b) => times[a] - times[b]
+                );
+
+                // Award points
+                scores[winners[0]] += 50;
+                scores[winners[1]] += 25;
+                scores[winners[2]] += 10;
+
+                console.log("Updated Scores:", scores);
+
+                // Start next event
+                callback(scores, LongJump);
+
+            }, 3000);
+        }
+
+        // Long Jump
+        function LongJump(scores, callback) {
+            console.log("\n🦘 Long Jump starting...");
+
+            setTimeout(() => {
+                let colors = ["Red", "Blue", "Green", "Yellow"];
+
+                // Select a random color
+                let winner = colors[
+                    Math.floor(Math.random() * colors.length)
+                ];
+
+                console.log("Previous Scores:", { ...scores });
+                console.log(`${winner} wins the Long Jump!`);
+
+                // Award 150 points
+                scores[winner] += 150;
+
+                console.log("Updated Scores:", scores);
+
+                // Start next event
+                callback(scores, HighJump);
+
+            }, 2000);
+        }
+
+        // High Jump
+        function HighJump(scores, callback) {
+            console.log("\n🏅 High Jump starting...");
+
+            let winner = prompt(
+                "Which color team won the High Jump? (Red, Blue, Green, Yellow)"
+            );
+
+            console.log("Previous Scores:", { ...scores });
+
+            // Validate user input
+            winner = winner ? winner.trim() : "";
+
+            let validColors = ["Red", "Blue", "Green", "Yellow"];
+
+            let selectedColor = validColors.find(
+                color => color.toLowerCase() === winner.toLowerCase()
+            );
+
+            if (selectedColor) {
+                scores[selectedColor] += 100;
+                console.log(`${selectedColor} wins the High Jump!`);
+            } else {
+                console.log("No valid winner selected. No points awarded.");
+            }
+
+            console.log("Updated Scores:", scores);
+
+            // Start next event
+            callback(scores);
+        }
+
+        // Award Ceremony
+        function AwardCeremony(scores) {
+            console.log("\n🎉 Award Ceremony!");
+            console.log("Final Scores:", scores);
+
+            // Sort teams by score (highest first)
+            let winners = Object.keys(scores).sort(
+                (a, b) => scores[b] - scores[a]
+            );
+
+            console.log(`🥇 First Position: ${winners[0]} - ${scores[winners[0]]} points`);
+            console.log(`🥈 Second Position: ${winners[1]} - ${scores[winners[1]]} points`);
+            console.log(`🥉 Third Position: ${winners[2]} - ${scores[winners[2]]} points`);
+            console.log(`Fourth Position: ${winners[3]} - ${scores[winners[3]]} points`);
+
+            console.log("\n🏆 Sports Day Completed!");
+        }
+
+        // Start the Sports Day
+        OpeningCeremony((scores, callback) => {
+            callback(scores, (scores, callback) => {
+                callback(scores, (scores, callback) => {
+                    callback(scores, AwardCeremony);
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>
